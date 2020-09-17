@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public class playerManager : MonoBehaviour
 {
+    private List<Collectibles> inventory = new List<Collectibles>();
+    public Text inventoryText;
+    public Text descriptionText;
+    private int currentIndex;
     // Player specific variables
     private int health;
     private int score;
@@ -46,6 +50,34 @@ public class playerManager : MonoBehaviour
         if (health <= 0)
         {
             LoseGame();
+        }
+        if(inventory.Count == 0)
+        {
+            //if inventory is empty
+            inventoryText.text = "Current Selection: None";
+            descriptionText.text = "";
+        }
+        else
+        {
+            inventoryText.text = "Current Selection: " + inventory[currentIndex].collectableName + " " + currentIndex.ToString();
+            descriptionText.text = "Press [e] to " + inventory[currentIndex].description;
+        }
+
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            //using
+            inventory[currentIndex].Use();
+            inventory.RemoveAt(currentIndex);
+            currentIndex = (currentIndex - 1) % inventory.Count;
+        }
+
+        if(Input.GetKeyDown(KeyCode.I))
+        {
+            if(inventory.Count > 0)
+            {
+                //move to the next item in the inventory 
+                currentIndex = (currentIndex - 1) % inventory.Count;
+            }
         }
     }
 
@@ -114,6 +146,17 @@ public class playerManager : MonoBehaviour
     public void ChangeScore(int value)
     {
         score += value;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.GetComponent<Collectibles>() != null)
+        {
+            collision.GetComponent<Collectibles>().player = this.gameObject;
+            collision.gameObject.transform.parent=null;
+            inventory.Add(collision.GetComponent<Collectibles>());
+            collision.gameObject.SetActive(false);
+        }
     }
 
 }
