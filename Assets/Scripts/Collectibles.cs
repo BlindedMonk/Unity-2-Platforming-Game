@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Collectibles : MonoBehaviour
 {
-    public string collectableName;
+    public string collectibleName;
     public string description; 
     public GameObject player;
 

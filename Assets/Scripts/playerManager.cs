@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class playerManager : MonoBehaviour
 {
     private List<Collectibles> inventory = new List<Collectibles>();
-    public Text inventoryText;
-    public Text descriptionText;
+    public TextMeshProUGUI inventoryText;
+    public TextMeshProUGUI descriptionText;
     private int currentIndex;
     // Player specific variables
     private int health;
@@ -59,7 +60,7 @@ public class playerManager : MonoBehaviour
         }
         else
         {
-            inventoryText.text = "Current Selection: " + inventory[currentIndex].collectableName + " " + currentIndex.ToString();
+            inventoryText.text = "Current Selection: " + inventory[currentIndex].collectibleName + " " + currentIndex.ToString();
             descriptionText.text = "Press [e] to " + inventory[currentIndex].description;
         }
 
@@ -68,7 +69,7 @@ public class playerManager : MonoBehaviour
             //using
             inventory[currentIndex].Use();
             inventory.RemoveAt(currentIndex);
-            currentIndex = (currentIndex - 1) % inventory.Count;
+            currentIndex = (currentIndex + 1) % inventory.Count;
         }
 
         if(Input.GetKeyDown(KeyCode.I))
@@ -76,7 +77,7 @@ public class playerManager : MonoBehaviour
             if(inventory.Count > 0)
             {
                 //move to the next item in the inventory 
-                currentIndex = (currentIndex - 1) % inventory.Count;
+                currentIndex = (currentIndex + 1) % inventory.Count;
             }
         }
     }
