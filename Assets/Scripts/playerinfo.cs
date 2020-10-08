@@ -16,6 +16,13 @@ public class playerinfo : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
+    public void ResetValues()
+    {
+        score = 0;
+        health = 100;
+        inventory.Clear();
+    }
+
     // Update is called once per frame
     void Update()
     {
